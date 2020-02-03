@@ -27,24 +27,27 @@ Use a real Linux system from within your Mac: welcome (back) Vagrant. The curren
 
 ### Manual Post-Operations
 
+#### Accessing the box
+
+Copy the output of `vagrant ssh-config --host devbox` into your `~/.ssh/config` file. 
+
+You should be able to connect to the box using `ssh devbox`.
+
 #### Configure your git information
 
+    ssh devbox
     git config --global user.name "Your Name Here"
     git config --global user.email "your_email@youremail.com"
 
 #### Generate a dedicated SSH Key
 
+    ssh devbox
     ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_devbox_$(date +%Y-%m-%d) -C "Ekino DevBox key for ENTER YOUR NAME"
     
 > Using a dedicate key helps to avoid avoid one key for all usages. You can have a key for pushing code to repositories. And a key (on the host) to connect to servers. So if a dependency is bloated with a malware, your servers' keys are not exposed.
 
 > Don't forget to share your public key to services that may required it.
 
-#### Accessing the box
-
-Copy the output of `vagrant ssh-config --host devbox` into your `~/.ssh/config` file. 
-
-You should be able to connect to the box using `ssh devbox`.
 
 #### Importing projects
 
@@ -52,7 +55,7 @@ You should be able to connect to the box using `ssh devbox`.
 
 #### Accessing projects
 
-By default the box expose the following ports: 8080, 8181, 3000, 3001, 1337 and 5432.
+By default the box expose the following ports: `8080`, `8181`, `3000`, `3001`, `1337` and `5432`.
 
 You can add new ports by editing the `Vagrantfile`. Don't forget to run `vagrant reload` to apply the change.
 

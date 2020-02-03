@@ -10,6 +10,12 @@ Vagrant.configure("2") do |config|
     virtualbox.vm.box = "ubuntu/bionic64"
 
     virtualbox.vm.network :private_network, ip: "172.16.3.2",  nic_type: "virtio"
+    virtualbox.vm.network "forwarded_port", guest: 8080, host: 8080
+    virtualbox.vm.network "forwarded_port", guest: 8181, host: 8181
+    virtualbox.vm.network "forwarded_port", guest: 3000, host: 3000
+    virtualbox.vm.network "forwarded_port", guest: 3001, host: 3001
+    virtualbox.vm.network "forwarded_port", guest: 1337, host: 1337
+    virtualbox.vm.network "forwarded_port", guest: 5432, host: 5432
 
     config.vm.provider :virtualbox do |v|
       v.gui = false
@@ -21,7 +27,7 @@ Vagrant.configure("2") do |config|
 
     virtualbox.vm.provision "shell", inline: <<-SHELL
       apt-get update
-      apt-get install -y tig vim  apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+      apt-get install -y git tig vim  apt-transport-https ca-certificates curl gnupg-agent software-properties-common
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
       add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
       apt-get update
@@ -33,10 +39,8 @@ Vagrant.configure("2") do |config|
 
       apt-get -y install zsh
       usermod -s /usr/bin/zsh vagrant 
-      su vagrant /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
+      (su vagrant /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || exit 0)
+      su vagrant -c "mkdir -p /home/vagrant/projects"
     SHELL
-
-
   end
 end

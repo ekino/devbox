@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
 
       usermod -aG docker vagrant
 
-      apt-get -y install zsh
+      apt-get -y install zsh build-essential tmux
       usermod -s /usr/bin/zsh vagrant 
       (su vagrant /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || exit 0)
       su vagrant -c "mkdir -p /home/vagrant/projects"

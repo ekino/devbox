@@ -27,6 +27,7 @@ Vagrant.configure("2") do |config|
 
     virtualbox.vm.provision "shell", inline: <<-SHELL
       apt-get update
+      apt-get upgrade
       apt-get install -y git tig vim  apt-transport-https ca-certificates curl gnupg-agent software-properties-common
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
       add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -41,6 +42,14 @@ Vagrant.configure("2") do |config|
       usermod -s /usr/bin/zsh vagrant 
       (su vagrant /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || exit 0)
       su vagrant -c "mkdir -p /home/vagrant/projects"
+      su vagrant -c "if [ ! -f ~/.ssh/id_ed25519_devbox ]; then ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_devbox -P ''; fi"
+      su vagrant -c "if [ ! -f ~/.ssh/config ]; then echo 'Host *' >> ~/.ssh/config; ; echo '  IndentityFile ~/.ssh/id_ed25519_devbox' >> ~/.ssh/config; fi"
+      echo "\n\n---\n"
+      echo "A public key has been created for you for this box, please add it to Gitlab/Github/Bitbucket accounts"
+      echo "Or you can import your keys into the box"
+      echo "\n---\n"
+      echo "The key: $(cat /home/vagrant/.ssh/id_ed25519_devbox.pub)"
+      echo "\n\nEnjoy!"
     SHELL
   end
 end

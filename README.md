@@ -23,7 +23,7 @@ Use a real Linux system from within your Mac: welcome (back) Vagrant. The curren
 
     curl -sL https://raw.githubusercontent.com/ekino/devbox/master/Vagrantfile -o Vagrantfile
     
-    vagrant up
+    vagrant up # This command can take up to 5min.
 
 ### Manual Post-Operations
 
@@ -39,11 +39,14 @@ You should be able to connect to the box using `ssh devbox`.
     git config --global user.name "Your Name Here"
     git config --global user.email "your_email@youremail.com"
 
-#### Generate a dedicated SSH Key
+#### Dedicated SSH Key
 
-    ssh devbox
-    ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_devbox_$(date +%Y-%m-%d) -C "Ekino DevBox key for ENTER YOUR NAME"
-    
+A dedicated key has been created for you. It will be display after the provisionning. You can access to it using:
+
+    cat ~/.ssh/id_ed25519_devbox
+
+Of course, you are free to re-import any keys inside the box.
+
 > Using a dedicate key helps to avoid avoid one key for all usages. You can have a key for pushing code to repositories. And a key (on the host) to connect to servers. So if a dependency is bloated with a malware, your servers' keys are not exposed.
 
 > Don't forget to share your public key to services that may required it.

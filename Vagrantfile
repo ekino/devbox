@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
       (su vagrant /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || exit 0)
       su vagrant -c "mkdir -p /home/vagrant/projects"
       su vagrant -c "if [ ! -f ~/.ssh/id_ed25519_devbox ]; then ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_devbox -P ''; fi"
-      su vagrant -c "if [ ! -f ~/.ssh/config ]; then echo 'Host *' >> ~/.ssh/config; ; echo '  IndentityFile ~/.ssh/id_ed25519_devbox' >> ~/.ssh/config; fi"
+      su vagrant -c "if [ ! -f ~/.ssh/config ]; then echo 'Host *' >> ~/.ssh/config; ; echo '  IdentityFile ~/.ssh/id_ed25519_devbox' >> ~/.ssh/config; fi"
       echo "\n\n---\n"
       echo "A public key has been created for you for this box, please add it to Gitlab/Github/Bitbucket accounts"
       echo "Or you can import your keys into the box"

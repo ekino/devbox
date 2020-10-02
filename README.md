@@ -17,6 +17,7 @@ Use a real Linux system from within your Mac: welcome (back) Vagrant. The curren
 
     brew cask install virtualbox
     brew cask install vagrant
+    vagrant plugin install vagrant-disksize
 
     mkdir -p Documents/devbox
     cd Documents/devbox
@@ -58,9 +59,7 @@ Of course, you are free to re-import any keys inside the box.
 
 #### Accessing projects
 
-By default the box expose the following ports: `8080`, `8181`, `3000`, `3001`, `1337` and `5432`.
-
-You can add new ports by editing the `Vagrantfile`. Don't forget to run `vagrant reload` to apply the change.
+By default the box does not bind any port to the guest. Please point any request to the VM IP: 172.16.3.2
 
 ### VSCODE Integration
 

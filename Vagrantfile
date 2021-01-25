@@ -1,12 +1,11 @@
 Vagrant.configure("2") do |config|
 
-
   config.ssh.insert_key = false
 
   # requires vagrant-disksize plugin - https://github.com/sprotheroe/vagrant-disksize
   config.disksize.size = '40GB'
 
-  config.vm.synced_folder '.', '/vagrant', type: 'nfs'
+  config.vm.synced_folder '.', '/vagrant', type: 'nfs', disabled: true
 
   config.vm.define "virtualbox" do |virtualbox|
     virtualbox.vm.hostname = "devbox"
@@ -46,8 +45,7 @@ Vagrant.configure("2") do |config|
         build-essential \
         tmux \
         libnss3-tools \
-        jq \
-        yarn
+        jq
 
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
       add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -62,6 +60,11 @@ Vagrant.configure("2") do |config|
       (su vagrant /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || exit 0)
 
       su vagrant -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash"
+
+      curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+      sudo apt update
+      sudo apt install --no-install-recommends yarn
 
       su vagrant -c "mkdir -p /home/vagrant/projects"
 

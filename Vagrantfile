@@ -47,29 +47,41 @@ Vagrant.configure("2") do |config|
         libnss3-tools \
         jq
 
+      # Install Docker-CE & add vagrant user to docker group.
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
       add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
       apt-get update
       apt-get -y install docker-ce docker-ce-cli containerd.io
-      curl -sL "https://github.com/docker/compose/releases/download/1.28.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      curl -sL "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
       chmod +x /usr/local/bin/docker-compose
-
       usermod -aG docker vagrant
+
+      # Use Zsh shell.
       usermod -s /usr/bin/zsh vagrant
 
+      # Install Oh-My-Zsh.
       (su vagrant /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || exit 0)
 
+      # Install NVM.
       su vagrant -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash"
 
+      # Install Yarn.
       curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
       echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
       sudo apt update
       sudo apt install --no-install-recommends yarn
 
-      su vagrant -c "mkdir -p /home/vagrant/projects"
+      # Install Lando.
+      wget https://files.devwithlando.io/lando-stable.deb
+      dpkg -i lando-stable.deb
 
+      # Increase max file watches (https://webpack.js.org/configuration/watch/#not-enough-watchers)
       echo "fs.inotify.max_user_watches = 1048576" | sudo tee --append /etc/sysctl.conf > /dev/null
 
+      # Create projects folder.
+      su vagrant -c "mkdir -p /home/vagrant/projects"
+
+      # Create SSH pub key.
       su vagrant -c "if [ ! -f ~/.ssh/id_ed25519_devbox ]; then ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_devbox -P ''; fi"
       su vagrant -c "if [ ! -f ~/.ssh/config ]; then echo 'Host *' >> ~/.ssh/config; ; echo '  IdentityFile ~/.ssh/id_ed25519_devbox' >> ~/.ssh/config; fi"
       echo "\n\n---\n"
@@ -80,6 +92,7 @@ Vagrant.configure("2") do |config|
       echo "\n\nEnjoy!"
     SHELL
 
+    # Import Zsh config.
     virtualbox.vm.provision "file", source: "./.zshrc", destination: "/home/vagrant/.zshrc"
   end
 end

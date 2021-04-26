@@ -15,14 +15,15 @@ Use a real Linux system from within your Mac: welcome (back) Vagrant. The curren
 
 ### Installation
 
-    brew cask install virtualbox
-    brew cask install vagrant
+    brew install --cask virtualbox
+    brew install --cask vagrant
     vagrant plugin install vagrant-disksize
 
-    mkdir -p Documents/devbox
-    cd Documents/devbox
+    mkdir -p ~/Documents/devbox
+    cd ~/Documents/devbox
 
     curl -sL https://raw.githubusercontent.com/ekino/devbox/master/Vagrantfile -o Vagrantfile
+    curl -sL https://raw.githubusercontent.com/ekino/devbox/master/.zshrc -o .zshrc
     
     vagrant up # This command can take up to 5min.
 

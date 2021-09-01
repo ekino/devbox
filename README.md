@@ -15,8 +15,8 @@ Use a real Linux system from within your Mac: welcome (back) Vagrant. The curren
 
 ### Installation
 
-    brew cask install virtualbox
-    brew cask install vagrant
+    brew install virtualbox
+    brew install vagrant
     vagrant plugin install vagrant-disksize
 
     mkdir -p Documents/devbox
